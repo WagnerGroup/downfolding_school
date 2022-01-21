@@ -35,6 +35,11 @@
 
 ## QMC excited states
 
-17. 
+17. Excited state theory.
+18. Example: get excited states for H2, compare to FCI
+19. Analyzing excited states
+    a) What type of excitations (spin vs orbital)
 
 ## DMD using QMC
+
+TBD exactly.
