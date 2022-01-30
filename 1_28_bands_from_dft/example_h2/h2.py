@@ -9,13 +9,13 @@ from ase.lattice import bulk
 from ase.dft.kpoints import sc_special_points as special_points, get_bandpath
 
 def run_hchain(r, chkfile, nk = 10, basis = 'ccpvdz', exp_to_discard=0.1, natom=2, smearing=0.01, rcut = 20, shifted = True):
-    vacuum = 10.
-    c = r*natom
+  vacuum = 10.
+  c = r*natom
 
-    latvec = np.array([[vacuum,0.,0.],[0.,vacuum,0.],[0.,0.,c]])
-    xyz = ";".join(f"H 0. 0. {i*r}" for i in range(natom))
+  latvec = np.array([[vacuum,0.,0.],[0.,vacuum,0.],[0.,0.,c]])
+  xyz = ";".join(f"H 0. 0. {i*r}" for i in range(natom))
 
-    cell = pbcgto.Cell(unit = 'B',
+  cell = pbcgto.Cell(unit = 'B',
                 a = latvec,
                 atom = xyz,
                 verbose = 4,
@@ -23,29 +23,29 @@ def run_hchain(r, chkfile, nk = 10, basis = 'ccpvdz', exp_to_discard=0.1, natom=
                 basis = basis,
             )
 
-    cell.exp_to_discard = exp_to_discard
-    cell.rcut = rcut
-    cell.build()
+  cell.exp_to_discard = exp_to_discard
+  cell.rcut = rcut
+  cell.build()
 
-    kpts=cell.make_kpts([1,1,nk],wrap_around=shifted)
-    mf = pbchf.KUKS(cell, kpts).density_fit()
-    mf.xc = 'PBE'
-    mf.chkfile = chkfile
-    mf = pbchf.addons.smearing_(mf, sigma=smearing)
+  kpts=cell.make_kpts([1,1,nk],wrap_around=shifted)
+  mf = pbchf.KUKS(cell, kpts).density_fit()
+  mf.xc = 'PBE'
+  mf.chkfile = chkfile
+  mf = pbchf.addons.smearing_(mf, sigma=smearing)
 
-    # break spin up and down symmetry
-    H = cell.search_ao_label("H 1s")
-    dm0 = mf.get_init_guess()
-    for i in np.arange(0,natom,2):
-      H_A = H[[i]]
-      H_B = H[[i+1]]
-      dm0[0, :, H_A, H_A] = 1.0
-      dm0[0, :, H_B, H_B]  = 0.0
-      dm0[1, :, H_A, H_A]  = 0.0
-      dm0[1, :, H_B, H_B] = 1.0
-    mf.kernel(dm0)
+  # break spin up and down symmetry
+  H = cell.search_ao_label("H 1s")
+  dm0 = mf.get_init_guess()
+  for i in np.arange(0,natom,2):
+    H_A = H[[i]]
+    H_B = H[[i+1]]
+    dm0[0, :, H_A, H_A] = 1.0
+    dm0[0, :, H_B, H_B]  = 0.0
+    dm0[1, :, H_A, H_A]  = 0.0
+    dm0[1, :, H_B, H_B] = 1.0
+  mf.kernel(dm0)
 
-    return cell, mf
+  return cell, mf
 
 
 if __name__ == "__main__":
