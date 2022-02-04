@@ -10,10 +10,12 @@
 
 Discussion: 02/04 (present your work)
 
-## Localizing wave functions
+## Localizing wave functions (02/18-)
 
 4. Localization strategies: Wannier (note that there are also IAO, PAO)
-   a) H chain: make localized orbitals (select active space, initial guess)
+   a) H chain: make localized orbitals (select active space, initial guess) 
+   (presentation: 02/18, discussion: 02/25)
+   
 5. Tight binding models from localized representations
    a) H chain: t(separation)
 6. Band interpolation using localized representations (Wannier interpolation)
