@@ -1,0 +1,14 @@
+#!/bin/bash
+
+#SBATCH --job-name=h1_w
+#SBATCH -n 15
+#SBATCH -p secondary-Eth
+#SBATCH --time=04:00:00
+
+module load anaconda/3
+module load openmpi/4.1.0-gcc-7.2.0
+. /usr/local/anaconda/5.2.0/python3/etc/profile.d/conda.sh
+conda activate pywannier
+module load intel/18.0
+
+python3 get_wannier.py
